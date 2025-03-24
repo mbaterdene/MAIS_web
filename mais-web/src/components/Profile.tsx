@@ -51,6 +51,7 @@ const Profile: React.FC = () => {
           {/* Bio Section */}
           <Bio 
             name={student.name}
+            grade={student.grade}
             school={student.school}
             bio={student.bio}
             currentStudy={student.currentStudy}
