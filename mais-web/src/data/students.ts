@@ -37,7 +37,7 @@ export interface Student {
 export const students: Student[] = [
   {
     id: 3341,
-    name: "DULGUUN TSERENDORJ",
+    name: "DULGUUN BOLOR-ERDENE",
     school: "MONGOL ASPIRATION INTERNATIONAL SCHOOL",
     grade: "11th grade",
     bio: "Hello! I'm a passionate student with interests in mathematics, science, and technology. I love learning new things and taking on challenging projects.",
@@ -88,7 +88,7 @@ export const students: Student[] = [
   },
   {
     id: 3342,
-    name: "BAT-ERDENE MUNKH",
+    name: "BAT-ERDENE MUNKHSAIKHAN",
     school: "MONGOL ASPIRATION INTERNATIONAL SCHOOL",
     grade: "12th grade",
     bio: "Passionate about computer science and artificial intelligence. Always eager to learn and create innovative solutions.",
@@ -105,6 +105,18 @@ export const students: Student[] = [
         description: "National Coding Competition Winner",
         date: "2023",
         icon: "💻"
+      },
+      {
+        id: 2,
+        title: "Best Student",
+        description: "Best Student Award 2023",
+        date: "2023",
+        icon: "🎯",
+        count: 2,
+        history: [
+          { title: "Bronze and Silver unlocked", date: "Jul 1, 2022" },
+          { title: "2nd pull request merged", date: "Jul 1, 2022" }
+        ]
       }
     ],
     subjects: [
