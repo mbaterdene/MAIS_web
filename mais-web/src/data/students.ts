@@ -83,6 +83,13 @@ export const students: Student[] = [
           { name: "Physics", grade: "A", icon: "⚡" },
           { name: "Chemistry", grade: "A", icon: "🧪" }
         ]
+      },
+      {
+        level: "IGCSE",
+        subjects: [
+          { name: "English Language", grade: "A*", icon: "📚" },
+          { name: "English Literature", grade: "A", icon: "📚" }
+        ]
       }
     ]
   },
