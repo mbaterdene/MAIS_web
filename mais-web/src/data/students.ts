@@ -42,7 +42,7 @@ export const students: Student[] = [
     grade: "11th grade",
     bio: "Hello! I'm a passionate student with interests in mathematics, science, and technology. I love learning new things and taking on challenging projects.",
     currentStudy: "Currently studying A Level",
-    imageUrl: "https://avatars.githubusercontent.com/u/dulguun",
+    imageUrl: "https://robohash.org/set=set2",
     socialLinks: {
       github: "https://github.com/dulguun",
       twitter: "https://twitter.com/dulguun",
@@ -100,7 +100,7 @@ export const students: Student[] = [
     grade: "12th grade",
     bio: "Passionate about computer science and artificial intelligence. Always eager to learn and create innovative solutions.",
     currentStudy: "Currently studying A Level",
-    imageUrl: "https://avatars.githubusercontent.com/u/bat-erdene",
+    imageUrl: "https://robohash.org/set=set3",
     socialLinks: {
       github: "https://github.com/bat-erdene",
       linkedin: "https://linkedin.com/in/bat-erdene"
@@ -144,7 +144,7 @@ export const students: Student[] = [
     grade: "11th grade",
     bio: "Creative mind with a strong interest in arts and literature. Love expressing ideas through various mediums.",
     currentStudy: "Currently studying IGCSE",
-    imageUrl: "https://avatars.githubusercontent.com/u/oyunbileg",
+    imageUrl: "https://robohash.org/set=set4",
     socialLinks: {
       twitter: "https://twitter.com/oyunbileg",
       portfolio: "https://oyunbileg.art"
@@ -176,7 +176,7 @@ export const students: Student[] = [
     grade: "10th grade",
     bio: "Sports enthusiast and team player. Balancing academics with athletic achievements.",
     currentStudy: "Currently studying IGCSE",
-    imageUrl: "https://avatars.githubusercontent.com/u/temuulen",
+    imageUrl: "https://robohash.org/set=set5",
     socialLinks: {
       twitter: "https://twitter.com/temuulen",
       linkedin: "https://linkedin.com/in/temuulen"
@@ -208,7 +208,7 @@ export const students: Student[] = [
     grade: "12th grade",
     bio: "Future entrepreneur with a passion for business and economics. Love analyzing market trends and developing business strategies.",
     currentStudy: "Currently studying A Level",
-    imageUrl: "https://avatars.githubusercontent.com/u/enkhjin",
+    imageUrl: "https://robohash.org/set=set6",
     socialLinks: {
       linkedin: "https://linkedin.com/in/enkhjin",
       portfolio: "https://enkhjin.biz"
