@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Profile from './components/Profile';
 import Navbar from './components/Navbar/Navbar';
+import Homepage from './components/Homepage/Homepage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <div className='pt-20'>
           <Routes>
             <Route path="/:id" element={<Profile />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/" element={<Navigate to="/3341" replace />} />
             <Route path="/404" element={<div className="min-h-screen flex items-center justify-center">
               <div className="text-center">
