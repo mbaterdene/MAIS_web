@@ -2,6 +2,7 @@ import { useState } from "react";
 import UpcomingEvents from "./Upcoming";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
+import { SubMenu } from "./SubMenu";
 import logo from "../../../assets/mais_logo_light.png";
 
 const subMenus: Record<string, string[]> = {

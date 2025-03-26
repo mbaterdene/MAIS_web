@@ -25,4 +25,4 @@ const SubMenu: React.FC<SubMenuProps> = ({ hoveredItem, subMenus }) => {
   );
 };
 
-export default SubMenu;
+export { SubMenu };
