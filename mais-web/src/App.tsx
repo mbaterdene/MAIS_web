@@ -1,29 +1,19 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
-import Profile from './components/Profile';
-import Navbar from './components/Navbar/Navbar';
+import { Routes, Route, Navigate } from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
+import Profile from "./components/Profile";
+import Home from "./components/Home";
+import "./App.css";
 
 function App() {
   return (
-    <>
-      <div>
-        <Navbar />
-      </div>
-       
-      <div className='pt-20'>
-          <Routes>
-            <Route path="/:id" element={<Profile />} />
-            <Route path="/" element={<Navigate to="/3341" replace />} />
-            <Route path="/404" element={<div className="min-h-screen flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
-                <p className="text-gray-600">Student not found</p>
-              </div>
-            </div>} />
-          </Routes>
-      </div>
-    </>
+    <div className="min-h-screen bg-[#f8fafc]">
+      
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/:id" element={<Profile />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   );
 }
 
