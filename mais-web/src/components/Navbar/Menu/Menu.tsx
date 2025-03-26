@@ -27,7 +27,7 @@ const Menu = () => {
 
       {isOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-[#121212] text-white flex flex-col">
-          <div className="w-full h-[6rem] mt-3 flex justify-center">
+          <div className="w-full h-[6rem] mt-3 flex justify-center relative">
             <div className="flex flex-row items-center">
               <img src={logo} alt="Logo" className="h-full" />
               <span>
@@ -39,10 +39,10 @@ const Menu = () => {
               <IoMdClose size={40} />
             </button>
           </div>
-          <div className="w-full flex flex-row">
-            <div className="flex w-[60%] bg-inherit p-6 pl-20 space-x-6">
-              <div className="w-1/2">
-                <nav className="mt-3 space-y-6 text-lg w-full">
+          <div className="w-full flex flex-col md:flex-row relative">
+            <div className="flex w-full md:w-[60%] bg-inherit p-4 md:p-6 md:pl-20 space-x-4 md:space-x-6">
+              <div className="w-full md:w-1/2">
+                <nav className="mt-3 space-y-4 md:space-y-6 text-base md:text-lg w-full">
                   {Object.keys(subMenus).map((item, index) => (
                     <button
                       key={index}
@@ -50,10 +50,10 @@ const Menu = () => {
                         setHoveredItem(item);
                         setIsSubmenuOpen(true);
                       }}
-                      className="flex justify-between w-full text-left items-center border-b border-gray-700 pb-5 cursor-pointer hover:text-gray-400"
+                      className="flex justify-between w-full text-left items-center border-b border-gray-700 pb-3 md:pb-5 cursor-pointer hover:text-gray-400"
                     >
                       {item}
-                      <span className="text-3xl">
+                      <span className="text-2xl md:text-3xl">
                         &#x203A;
                       </span>
                     </button>
@@ -63,11 +63,11 @@ const Menu = () => {
 
               {isSubmenuOpen && hoveredItem && (
                 <div
-                  className="w-1/2 bg-gray-800 p-6 rounded"
+                  className="w-full md:w-1/2 bg-gray-800 p-4 md:p-6 rounded mt-4 md:mt-0"
                   onMouseEnter={() => setIsSubmenuOpen(true)}
                   onMouseLeave={() => setIsSubmenuOpen(false)}
                 >
-                  <h2 className="text-lg font-semibold mb-4">{hoveredItem}</h2>
+                  <h2 className="text-base md:text-lg font-semibold mb-3 md:mb-4">{hoveredItem}</h2>
                   <ul className="space-y-2">
                     {subMenus[hoveredItem].map((subItem, index) => (
                       <li onClick={() => {console.log('hippy!')}} key={index} className="p-2 bg-gray-700 rounded hover:bg-gray-600 cursor-pointer">
@@ -78,13 +78,13 @@ const Menu = () => {
                 </div>
               )}
             </div>
-            <div className="w-[30%] ml-auto pr-20">
+            <div className="w-full md:w-[30%] md:ml-auto md:pr-20 p-4 md:p-0">
               <UpcomingEvents />
             </div>
           </div>
-          <div className="footer mt-auto h-[4rem] bg-gray-800 flex flex-row items-center">
-            <div className="w-[50%] flex justify-center items-center">
-              <ul className="flex space-x-12">
+          <div className="footer mt-auto h-[4rem] bg-gray-800 flex flex-col md:flex-row items-center p-4 md:p-0">
+            <div className="w-full md:w-[50%] flex justify-center items-center mb-2 md:mb-0">
+              <ul className="flex flex-wrap justify-center gap-4 md:gap-12">
                 {footerLinks.map((link, index) => (
                   <li key={index} className="cursor-pointer hover:text-gray-400">
                     {link}
@@ -92,7 +92,7 @@ const Menu = () => {
                 ))}
               </ul>
             </div>
-            <div className="w-[50%] flex justify-center items-center">
+            <div className="w-full md:w-[50%] flex justify-center items-center">
               <p>&copy; 2021 MAIS</p>
             </div>  
           </div>
