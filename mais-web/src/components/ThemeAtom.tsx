@@ -1,11 +1,11 @@
 import { atomWithStorage } from "jotai/utils";
-import { atom } from "jotai";
+import { atom, Getter, Setter } from "jotai/vanilla";
 
 export const Language = atomWithStorage("language", "EN");
 
 export const setLanguage = atom(
   null, 
-  (get, set, value: string) => {
+  (get: Getter, set: Setter, value: string) => {
     set(Language, value);
   }
 );
@@ -32,7 +32,7 @@ interface NewUser {
 
 export const setNewUser = atom(
   null, 
-  (get, set, { type, value }: { type: keyof NewUser; value: any }) => {
+  (get: Getter, set: Setter, { type, value }: { type: keyof NewUser; value: any }) => {
     const prevUser = get(newUser); 
     set(newUser, { ...prevUser, [type]: value }); 
   }

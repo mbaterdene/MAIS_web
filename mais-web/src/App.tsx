@@ -10,6 +10,7 @@ function App() {
       <div>
         <Navbar />
       </div>
+       
       <div className='pt-20'>
           <Routes>
             <Route path="/:id" element={<Profile />} />

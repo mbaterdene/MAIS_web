@@ -22,7 +22,7 @@ const Menu = () => {
   return (
     <div className="relative">
       <button onClick={() => setIsOpen(true)}>
-        <HiOutlineMenuAlt3 fontSize={35} />
+        <HiOutlineMenuAlt3 size={35} />
       </button>
 
       {isOpen && (
@@ -36,7 +36,7 @@ const Menu = () => {
               </span>
             </div>  
             <button className="absolute top-0 right-0 m-4 text-white" onClick={() => setIsOpen(false)}>
-              <IoMdClose fontSize={40} />
+              <IoMdClose size={40} />
             </button>
           </div>
           <div className="w-full flex flex-row">
