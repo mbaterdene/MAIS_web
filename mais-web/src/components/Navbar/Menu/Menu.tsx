@@ -95,6 +95,11 @@ const Menu = () => {
             </div>
             <div className="w-full md:w-[50%] flex justify-center items-center">
               <p>&copy; 2021 MAIS</p>
+              <button>
+                <a href="/publish" className="ml-4 text-blue-500 hover:underline">
+                  Publish
+                </a>
+              </button>
             </div>  
           </div>
         </div>

@@ -2,13 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Statistics from './Statistics';
 import WorldMap from './WorldMap';
-import Navbar from './Navbar/Navbar';
 
 const Home = () => {
   return (
     
     <div className="min-h-screen">
-      <Navbar />
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 text-white">
         <div className="absolute inset-0 bg-black opacity-50"></div>
