@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile";
 import Home from "./components/Home";
-import Publish from "./components/Admin/News/Publish";
+import Publish from "./components/Admin/News/Editor";
 import AdminPage from "./components/Admin/AdminPage";
 import "./App.css";
 

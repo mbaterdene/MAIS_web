@@ -87,3 +87,9 @@ div.ProseMirror h6 {
 .ProseMirror li {
   margin-bottom: 5px;  /* Space between list items */
 }
+
+.ProseMirror a {
+  color: blue; /* Change link color */
+  text-decoration: underline; /* Ensure it's visibly a link */
+  cursor: pointer;
+}
