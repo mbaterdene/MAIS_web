@@ -4,6 +4,8 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
 import { SubMenu } from "./SubMenu";
 import logo from "../../../assets/mais_logo_light.png";
+import { useAtom } from "jotai";
+import { isMenuOpen } from "../../ThemeAtom";
 
 const subMenus: Record<string, string[]> = {
   "Meet MAIS": ["Overview", "History", "Campus"],
@@ -17,12 +19,13 @@ const footerLinks: string[] = ["News", "Events", "Contact Us", "Forums"];
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpenState, setIsMenuOpenState] = useAtom(isMenuOpen);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
   return (
     <div className="relative">
-      <button onClick={() => setIsOpen(true)}>
+      <button onClick={() => {setIsOpen(true); setIsMenuOpenState(true)}}>
         <HiOutlineMenuAlt3 size={35} />
       </button>
 
@@ -36,7 +39,7 @@ const Menu = () => {
                 <p className="text-md">International School</p>
               </span>
             </div>  
-            <button className="absolute top-0 right-0 m-4 text-white" onClick={() => setIsOpen(false)}>
+            <button className="absolute top-0 right-0 m-4 text-white" onClick={() => {setIsOpen(false); setIsMenuOpenState(false)}}>
               <IoMdClose size={40} />
             </button>
           </div>
@@ -96,8 +99,8 @@ const Menu = () => {
             <div className="w-full md:w-[50%] flex justify-center items-center">
               <p>&copy; 2021 MAIS</p>
               <button>
-                <a href="/publish" className="ml-4 text-blue-500 hover:underline">
-                  Publish
+                <a href="/admin" className="ml-4 text-blue-500 hover:underline">
+                  Admin
                 </a>
               </button>
             </div>  

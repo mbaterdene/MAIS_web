@@ -1,9 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile";
 import Home from "./components/Home";
-import Publish from "./components/Admin/News/Editor";
+import Edit from "./components/Admin/News/Edit";
 import AdminPage from "./components/Admin/AdminPage";
+import CreatePage from "./components/Admin/Management/CreateUser";
 import "./App.css";
 
 function App() {
@@ -15,10 +17,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/:id" element={<Profile />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/publish" element={<Publish />} />
+          <Route path="/admin/create" element={<CreatePage />} />
+          <Route path="/admin/publish" element={<Edit />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
+      <Toaster/>
     </div>
   );
 }

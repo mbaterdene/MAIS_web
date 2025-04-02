@@ -24,6 +24,9 @@ import Gapcursor from "@tiptap/extension-gapcursor";
 import TextStyle from "@tiptap/extension-text-style";
 import { HexColorPicker } from "react-colorful";
 
+import { useAtom } from "jotai";
+import { isMenuOpen } from "../../ThemeAtom";
+
 const fonts = [
   { label: "Inter", value: "Inter" },
   { label: "Comic Sans", value: '"Comic Sans MS", "Comic Sans"' },
@@ -68,7 +71,6 @@ const Editor = () => {
           try {
             const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`)
 
-            // use default validation
             if (!ctx.defaultValidate(parsedUrl.href)) {
               return false
             }
@@ -126,11 +128,13 @@ const Editor = () => {
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       ImageResize,
     ],
-    content: "<p>Write your news here...</p>",
+    content: "<p></p>",
   });
 
   const [highlightColor, setHighlightColor] = React.useState("#ff0000");
   const [showPicker, setShowPicker] = React.useState(false);
+
+  const [ismenuOpen] = useAtom(isMenuOpen);
 
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href; 
@@ -170,8 +174,8 @@ const Editor = () => {
   console.log("Editor JSON Content:", jsonContent);
 
   return (
-    <div className="border p-4 rounded-md">
-      <div className="mb-2 flex items-center justify-evenly w-full sm:w-[50%] bg-white rounded-xl py-1 px-2">
+    <div className="border py-4 w-full">
+      <div className={`fixed top-0 ml-auto mt-20 border-t border-b border-r z-30 mb-2 flex items-center justify-evenly w-[75%] bg-gray-100 py-1 px-2 ${ismenuOpen ? "hidden" : "block"}`}>
         <select
           onChange={(e) => {
             const level = parseInt(e.target.value);
@@ -180,9 +184,9 @@ const Editor = () => {
             }
           }}
           defaultValue=""
-          className="hover:bg-gray-100 rounded"
+          className="hover:bg-white bg-inherit focus:outline-none rounded"
         >
-          <option value="">Heading</option>
+          <option value="">Normal Text</option>
           <option value="1">H1</option>
           <option value="2">H2</option>
           <option value="3">H3</option>
@@ -196,7 +200,7 @@ const Editor = () => {
             rel="stylesheet"
           />
           <div className="control-group">
-            <select onChange={handleFontChange} defaultValue="" className="hover:bg-gray-100 rounded">
+            <select onChange={handleFontChange} defaultValue="" className="hover:bg-white bg-inherit rounded focus:outline-none">
               <option value="" disabled>Select Font</option>
               {fonts.map((font) => (
                 <option key={font.value} value={font.value}>
@@ -297,7 +301,7 @@ const Editor = () => {
           <AiOutlineOrderedList fontSize={20}/>
         </button>
       </div>
-      <div className="">
+      <div className="py-2 px-8 pt-12">
         <EditorContent editor={editor} />
       </div>
     </div>

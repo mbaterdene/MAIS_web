@@ -1,76 +1,164 @@
-import Document from "@tiptap/extension-document";
-import FontFamily from "@tiptap/extension-font-family";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import TextStyle from "@tiptap/extension-text-style";
-import { EditorContent, useEditor } from "@tiptap/react";
-import React from "react";
+import { FaNewspaper, FaUsers } from "react-icons/fa6";
+import { FaCheckCircle, FaUserPlus, FaUserEdit } from "react-icons/fa";
+import { MdOutlineAccessTimeFilled, MdAdd, MdSettings } from "react-icons/md";
+import { BiSolidReport } from "react-icons/bi";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const fonts = [
-  { label: "Inter", value: "Inter" },
-  { label: "Comic Sans", value: '"Comic Sans MS", "Comic Sans"' },
-  { label: "Serif", value: "serif" },
-  { label: "Monospace", value: "monospace" },
-  { label: "Cursive", value: "cursive" },
-  { label: "CSS Variable", value: "var(--title-font-family)" },
-  { label: "Exo 2", value: '"Exo 2"' },
-  { label: "Arial", value: "Arial" },
-  { label: "Helvetica", value: "Helvetica" },
-  { label: "Verdana", value: "Verdana" },
-  { label: "Tahoma", value: "Tahoma" },
-  { label: "Trebuchet MS", value: "Trebuchet MS" },
-  { label: "Geneva", value: "Geneva" },
-  { label: "Times New Roman", value: '"Times New Roman", Times, serif' },
-  { label: "Georgia", value: "Georgia" },
-  { label: "Garamond", value: "Garamond" },
-  { label: "Palatino", value: "Palatino" },
-  { label: "Bookman", value: "Bookman" },
-  { label: "Courier New", value: '"Courier New", Courier, monospace' },
-  { label: "Lucida Console", value: "Lucida Console, Monaco, monospace" },
-  { label: "Monaco", value: "Monaco" },
-  { label: "Consolas", value: "Consolas" },
-  { label: "Brush Script", value: '"Brush Script MT", cursive' },
-  { label: "Impact", value: "Impact, fantasy" },
-];
+const AdminPage = () => {
 
-
-export default function TiptapWithFontSelector() {
-  const editor = useEditor({
-    extensions: [Document, Paragraph, Text, TextStyle, FontFamily],
-    content: "<p>Select a font from the dropdown!</p>",
-  });
-
-  if (!editor) {
-    return null;
-  }
-
-  const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedFont = event.target.value;
-    if (selectedFont) {
-      editor.chain().focus().setFontFamily(selectedFont).run();
-    }
-  };
+  const [users] = useState(100);
+  const [news] = useState(50);
+  const [status] = useState("active");
+  const [lastlogin] = useState("2h ago");
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet"
-      />
-      <div className="control-group">
-        <select onChange={handleFontChange} defaultValue="">
-          <option value="" disabled>Select Font</option>
-          {fonts.map((font) => (
-            <option key={font.value} value={font.value}>
-              {font.label}
-            </option>
-          ))}
-        </select>
-        <button onClick={() => editor.chain().focus().unsetFontFamily().run()}>
-          Reset Font
-        </button>
+      <div className='w-full h-full flex flex-col py-6 px-10'>
+        <div className='w-full flex justify-between space-x-10'>
+          <button className='h-[5rem] w-[50%] border bg-white flex justify-center items-center shadow-sm hover:shadow-md'>
+            <Link to="/admin/publish">
+              <div className="flex flex-row items-center">
+                <FaNewspaper className='text-4xl' />
+                <span className='text-4xl ml-2'>News Management</span>
+              </div>
+            </Link>
+          </button>
+          <button className='h-[5rem] w-[50%] border bg-white flex justify-center items-center shadow-sm hover:shadow-md'>
+            <Link to={"/admin/create"}>
+              <div className="flex flex-row items-center">
+                <FaUsers className='text-4xl' />
+                <span className='text-4xl ml-2'>User Management</span>
+              </div>
+            </Link>
+          </button>
+        </div>
+        <div className="w-full flex flex-row justify-between space-x-10 mt-10">
+          <div className="flex flex-row justify-between border bg-white shadow-sm hover:shadow-md p-4 w-[25%]">
+            <div className="flex flex-col">
+              <span>
+                Total Users
+              </span>
+              <span className="font-bold text-xl">
+                {users}
+              </span>
+            </div>
+            <div>
+              <FaUsers className='text-4xl' />
+            </div>
+          </div>
+          <div className="flex flex-row justify-between border bg-white shadow-sm hover:shadow-md p-4 w-[25%]">
+            <div className="flex flex-col">
+              <span>
+                Total News
+              </span>
+              <span className="font-bold text-xl">
+                {news}
+              </span>
+            </div>
+            <div>
+              <FaNewspaper className='text-4xl' />
+            </div>
+          </div>
+          <div className="flex flex-row justify-between border bg-white shadow-sm hover:shadow-md p-4 w-[25%]">
+            <div className="flex flex-col">
+              <span>
+                System Status
+              </span>
+              <span className="font-bold text-xl capitalize text-green-500">
+                {status}
+              </span>
+            </div>
+            <div>
+              <FaCheckCircle className='text-4xl' />
+            </div>
+          </div>
+          <div className="flex flex-row justify-between border bg-white shadow-sm hover:shadow-md p-4 w-[25%]">
+            <div className="flex flex-col">
+              <span>
+                Last Login
+              </span>
+              <span className="font-bold text-xl">
+                {lastlogin}
+              </span>
+            </div>
+            <div>
+              <MdOutlineAccessTimeFilled className='text-4xl' />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-row w-full space-x-10 mt-10">
+          <div className="flex flex-col w-[50%] border bg-white shadow-sm hover:shadow-md p-4">
+            <span className="text-2xl font-bold">
+              Quick Actions
+            </span>
+            <div className="flex flex-row">
+              <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
+                <MdAdd className='text-xl mr-1' />
+                Create News
+              </button>
+              <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
+                <FaUserPlus className='text-xl mr-1' />
+                Add User
+              </button>
+            </div>
+            <div className="flex flex-row">
+              <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
+                <BiSolidReport className='text-xl mr-1' />
+                View Reports
+              </button>
+              <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
+                <MdSettings className='text-xl mr-1' />
+                Settings
+              </button>
+            </div>
+            <div>
+
+            </div>
+          </div>
+          <div className="flex flex-col w-[50%] border bg-white shadow-sm hover:shadow-md p-4">
+            <span className="text-2xl font-bold">
+              Recent Activities
+            </span>
+            <div className="flex flex-row items-center mt-4">
+              <FaUserEdit className='text-2xl mr-2' />
+              <div className="flex flex-col">
+                <span>User profile updated</span>
+                <span className="text-gray-500 text-sm">1h ago</span>
+              </div>
+            </div>
+            <div className="flex flex-row items-center mt-4">
+              <FaUserEdit className='text-2xl mr-2' />
+              <div className="flex flex-col">
+                <span>User profile updated</span>
+                <span className="text-gray-500 text-sm">1h ago</span>
+              </div>
+            </div>
+            <div className="flex flex-row items-center mt-4">
+              <FaUserEdit className='text-2xl mr-2' />
+              <div className="flex flex-col">
+                <span>User profile updated</span>
+                <span className="text-gray-500 text-sm">1h ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <EditorContent editor={editor} />
+      <div className="footer flex flex-row justify-between items-center mt-5 border-t pt-4 px-4">
+        <div className="flex">
+          <span className="text-gray-500 text-sm border-r border-gray-300 pr-2">
+            Version 1.0.0
+          </span>
+          <span className="text-gray-500 text-sm pl-2">
+            © 2023 MAIS. All rights reserved.
+          </span>
+        </div>
+        <span className="text-gray-500 text-sm">
+          Developed by MAIS Team
+        </span>
+      </div>
     </>
-  );
+  )
 }
+
+export default AdminPage
