@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import toast from 'react-hot-toast'
-
-import { MdCloudUpload } from "react-icons/md";
+import Upload from '../../../assets/upload.png'
 import { MdOutlineAdd } from "react-icons/md";
 
 
@@ -58,6 +57,20 @@ const CreatePage = () => {
     });
     setOptions(["1", "2", "3"]);
   }
+
+  const [image, setImage] = useState<any>(null);
+  const [imagePreview, setImagePreview] = useState<any>(null);
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <>
@@ -134,37 +147,21 @@ const CreatePage = () => {
           />
           )  
           */}
-          <button className={`flex flex-col w-full h-[10rem] border rounded-md mt-3 bg-white items-center justify-center cursor-pointer`}>
-            <span>
-              <MdCloudUpload className="text-8xl text-center" />
-            </span>
-            <input
-                type='picture'
-                value={newUser.picture}
-                onChange={(e) => setNewUser({ ...newUser, picture: e.target.value })}
-                placeholder='Picture'
-                className='w-[50%] p-2 mb-3 border rounded-md'              
-              />
-          </button>
-          {/*}
           <label
-            htmlFor="fileInput"
-            className={`${
-              newUser.picture ? `hidden` : `block`
-            } w-full h-[10rem] border rounded-md mt-3 bg-white hover:bg-gray-200 flex items-center justify-center cursor-pointer`}
-          >
-            <span>
-              <MdCloudUpload className="text-8xl text-center" />
-            </span>
-
-            {<input
-              id="fileInput"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleImgChange(e, "picture")}
-              className="hidden"
-            />
-          </label>*/}
+                  className="flex flex-row justify-center items-center w-full h-[10rem] mx-auto mt-3 border cursor-pointer"
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  <img
+                    src={(typeof imagePreview === "string" ? imagePreview : undefined) || Upload} // Use the uploaded image preview or fallback to the default image
+                    alt="Preview"
+                    className="w-[8rem] h-[8rem]" // Ensure the image covers the container
+                  />
+                </label>
           <button
             onClick={() => handleCreateUser()}
             className='w-full sm:w-[50%] text-xl font-semibold hover:bg-gray-200 bg-white border rounded-md p-2 mt-3 mb-3'

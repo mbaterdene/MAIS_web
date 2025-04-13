@@ -93,14 +93,14 @@ const AdminPage = () => {
               Quick Actions
             </span>
             <div className="flex flex-row">
-              <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
+              <Link to={"/admin/publish"} className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
                 <MdAdd className='text-xl mr-1' />
                 Create News
-              </button>
-              <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
+              </Link>
+              <Link to={"/admin/create"} className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">
                 <FaUserPlus className='text-xl mr-1' />
                 Add User
-              </button>
+              </Link>
             </div>
             <div className="flex flex-row">
               <button className="flex flex-row items-center justify-center w-[50%] bg-black hover:bg-gray-900 text-white p-2 rounded-md shadow-sm hover:shadow-md mt-4 mr-4">

@@ -10,7 +10,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 text-white">
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-0 text-center px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">Welcome to MAIS</h1>
           <p className="text-xl md:text-2xl mb-8">Mongol Aspiration International School</p>
           <Link 

@@ -6,10 +6,10 @@ const Edit = () => {
   return (
     <>
       <div className='w-full h-full flex flex-row'>
-        <div className='w-1/4 h-full bg-gray-200'>
+        <div className='w-[10%] h-full bg-gray-200'>
           <Sidebar />
         </div>
-        <div className='w-3/4 h-full bg-white'>
+        <div className='w-[90%] h-full bg-white'>
           <Editor />
         </div>
       </div>

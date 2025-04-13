@@ -6,6 +6,7 @@ import { SubMenu } from "./SubMenu";
 import logo from "../../../assets/mais_logo_light.png";
 import { useAtom } from "jotai";
 import { isMenuOpen } from "../../ThemeAtom";
+import { Link } from "react-router-dom";
 
 const subMenus: Record<string, string[]> = {
   "Meet MAIS": ["Overview", "History", "Campus"],
@@ -15,13 +16,18 @@ const subMenus: Record<string, string[]> = {
   "Join Us": ["Admission", "Job Posting", "Contact Us", "Forums"],
 };
 
-const footerLinks: string[] = ["News", "Events", "Contact Us", "Forums"];
+const footerLinks: string[] = ["news", "events", "contact us", "forums"];
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpenState, setIsMenuOpenState] = useAtom(isMenuOpen);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setIsOpen(false);
+    setIsMenuOpenState(false);
+  };
 
   return (
     <div className="relative">
@@ -30,7 +36,7 @@ const Menu = () => {
       </button>
 
       {isOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-[#121212] text-white flex flex-col">
+        <div className="fixed top-0 left-0 z-30 w-full h-full bg-[#121212] text-white flex flex-col">
           <div className="w-full h-[6rem] mt-3 flex justify-center relative">
             <div className="flex flex-row items-center">
               <img src={logo} alt="Logo" className="h-full" />
@@ -90,9 +96,9 @@ const Menu = () => {
             <div className="w-full md:w-[50%] flex justify-center items-center mb-2 md:mb-0">
               <ul className="flex flex-wrap justify-center gap-4 md:gap-12">
                 {footerLinks.map((link, index) => (
-                  <li key={index} className="cursor-pointer hover:text-gray-400">
+                  <Link to={`${link}`} onClick={handleMenuClick} key={index} className="capitalize cursor-pointer hover:text-gray-400">
                     {link}
-                  </li>
+                  </Link>
                 ))}
               </ul>
             </div>

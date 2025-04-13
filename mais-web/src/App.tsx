@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile";
 import Home from "./components/Home";
 import Edit from "./components/Admin/News/Edit";
+import News from "./components/News";
 import AdminPage from "./components/Admin/AdminPage";
 import CreatePage from "./components/Admin/Management/CreateUser";
 import "./App.css";
@@ -19,6 +20,7 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/create" element={<CreatePage />} />
           <Route path="/admin/publish" element={<Edit />} />
+          <Route path="/news" element={<News />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

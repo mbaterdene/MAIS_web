@@ -1,10 +1,15 @@
+"use client"
+
 import { FaBold, FaItalic, FaStrikethrough  } from "react-icons/fa6";
 import { MdFormatListBulleted, MdFormatUnderlined, MdOutlineImage } from "react-icons/md";
 import { AiOutlineOrderedList } from "react-icons/ai";
 import { RiMenu2Fill, RiMenu3Fill, RiMenu5Fill } from "react-icons/ri";
 import { TbBallpenOff, TbLink, TbLinkOff } from "react-icons/tb";
+import Upload from "../../../assets/upload.png";
+import toast, { Toaster } from "react-hot-toast";
+import { MdPreview } from "react-icons/md";
 
-import React from "react";
+import React, { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -23,7 +28,8 @@ import FontFamily from "@tiptap/extension-font-family";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import TextStyle from "@tiptap/extension-text-style";
 import { HexColorPicker } from "react-colorful";
-
+import Preview from "./Preview";
+import { Modal } from "@mui/material";
 import { useAtom } from "jotai";
 import { isMenuOpen } from "../../ThemeAtom";
 
@@ -54,7 +60,17 @@ const fonts = [
   { label: "Impact", value: "Impact, fantasy" },
 ];
 
+const categories = [
+    "Others",
+    "Study Tips",
+    "Productivity",
+    "Study Skills",
+    "Mental Health",
+    "Technology",
+  ]
+
 const Editor = () => {
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -130,11 +146,71 @@ const Editor = () => {
     ],
     content: "<p></p>",
   });
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [image, setImage] = useState(null);
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('Others');
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(e.target.value);
+  };
+
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const content = editor?.getHTML() || ""; // Get the HTML content from the editor
+    console.log("Image:", image);
+    console.log("Title:", title);
+    console.log("Content:", content);
+    console.log("Category:", category);
+    if (!image || !title || !content || !category) {
+      toast.error("Please fill in all fields and select an image.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', image); // Append the file to FormData
+    formData.append('title', title); // Append the title
+    formData.append('content', content); // Append the content
+    formData.append('category', category); // Append the category
+
+    try {
+      const response = await fetch('http://localhost:5000/api/blogs/create', {
+        method: 'POST',
+        body: formData, // Send the FormData as the request body
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success('Blog uploaded successfully!');
+      } else {
+        console.error('Error uploading blog:', data.error);
+      }
+    } catch (error) {
+      console.error('Error uploading blog:', error);
+      toast.error("Error uploading blog. Don't insert pictures larger than 1mb in content.");
+    }
+  };
 
   const [highlightColor, setHighlightColor] = React.useState("#ff0000");
   const [showPicker, setShowPicker] = React.useState(false);
 
-  const [ismenuOpen] = useAtom(isMenuOpen);
 
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href; 
@@ -154,6 +230,8 @@ const Editor = () => {
     }
   };
 
+  const [isMenuOpenState, setIsMenuOpenState] = useAtom(isMenuOpen);
+
   if (!editor) {
     return null;
   }
@@ -171,11 +249,19 @@ const Editor = () => {
   };
 
   const jsonContent = editor.getJSON();
-  console.log("Editor JSON Content:", jsonContent);
+
+  const handlePreview = () => {
+    setPreviewOpen(true);
+    toast.success("Preview opened!");
+  };
 
   return (
-    <div className="border py-4 w-full">
-      <div className={`fixed top-0 ml-auto mt-20 border-t border-b border-r z-30 mb-2 flex items-center justify-evenly w-[75%] bg-gray-100 py-1 px-2 ${ismenuOpen ? "hidden" : "block"}`}>
+    <div className="border pb-4 pt-8 w-full">
+      <Toaster/>
+      <div className="w-[80%] mx-auto my-2 font-bold text-2xl text-start">
+        Content
+      </div>
+      <div className={`fixed top-0 ml-auto mt-20 border-t border-b border-r z-20 mb-2 flex items-center justify-evenly w-[90%] bg-gray-100 py-1 px-2 ${isMenuOpenState ? "hidden" : "block"}`}>
         <select
           onChange={(e) => {
             const level = parseInt(e.target.value);
@@ -301,9 +387,69 @@ const Editor = () => {
           <AiOutlineOrderedList fontSize={20}/>
         </button>
       </div>
-      <div className="py-2 px-8 pt-12">
+      <div className="w-[80%] mx-auto border focus-within:border-none">
         <EditorContent editor={editor} />
       </div>
+      <div className="w-[80%] mx-auto mt-3 font-bold text-2xl text-start">
+        Title
+      </div>
+      <div className="w-[80%] mx-auto mt-3 flex flex-row">
+        <input
+          value={title}
+          onChange={handleInputChange}
+          placeholder="Enter title here..."
+          className="border w-[80%] h-10 px-2"
+        />
+        <div className="w-[20%] border flex justify-center items-center">
+            <select 
+                className="category w-[75%]"
+                value={category}
+                onChange={handleCategoryChange}
+            >
+                {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                        {category}
+                    </option>
+                ))}
+            </select>
+        </div>
+      </div>
+      <div className="w-[80%] mx-auto mt-3 font-bold text-2xl text-start">
+        Cover Image
+      </div>
+      <label
+        className="flex flex-row justify-center items-center w-[80%] h-[8rem] mx-auto mt-3 border cursor-pointer"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="hidden"
+        />
+        <img
+          src={(typeof imagePreview === "string" ? imagePreview : undefined) || Upload} // Use the uploaded image preview or fallback to the default image
+          alt="Preview"
+          className="w-[8rem] h-[8rem]" // Ensure the image covers the container
+        />
+      </label>
+      <div className="w-[80%] mx-auto mt-3 flex justify-center">
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 w-[90%] hover:bg-blue-700 cursor-pointer text-white py-2 rounded"
+        >
+          Submit
+        </button>
+        <button onClick={handlePreview} className="w-[10%] flex justify-center items-center bg-white text-black border hover:bg-gray-200 cursor-pointer py-2 rounded ml-2">
+          <MdPreview fontSize={25}/>
+        </button>
+      </div>
+        <Modal
+          open={previewOpen}
+          onClose={() => setPreviewOpen(false)}
+          className="flex items-center justify-center w-[90%] h-[90%] mx-auto my-auto"
+        >
+          <Preview blog={{ image: (imagePreview as string) || null, title, content: editor.getHTML(), category }} />
+        </Modal>
     </div>
   );
 };
