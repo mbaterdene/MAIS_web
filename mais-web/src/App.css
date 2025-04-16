@@ -45,3 +45,51 @@
     transform: rotate(360deg);
   }
 }
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+div.ProseMirror h1 {
+  font-size: 2em;
+}
+
+div.ProseMirror h2 {
+  font-size: 1.75em;
+}
+
+div.ProseMirror h3 {
+  font-size: 1.5em;
+}
+
+div.ProseMirror h4 {
+  font-size: 1.25em;
+}
+
+div.ProseMirror h5 {
+  font-size: 1.125em;
+}
+
+div.ProseMirror h6 {
+  font-size: 1em;
+}
+
+.ProseMirror ul {
+  list-style-type: disc; /* Bullet list style */
+  padding-left: 20px;    /* Indentation for lists */
+}
+
+.ProseMirror ol {
+  list-style-type: decimal; /* Numbered list style */
+  padding-left: 20px;       /* Indentation for lists */
+}
+
+.ProseMirror li {
+  margin-bottom: 5px;  /* Space between list items */
+}
+
+.ProseMirror a {
+  color: blue; /* Change link color */
+  text-decoration: underline; /* Ensure it's visibly a link */
+  cursor: pointer;
+}

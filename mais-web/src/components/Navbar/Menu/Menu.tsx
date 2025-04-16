@@ -4,6 +4,9 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
 import { SubMenu } from "./SubMenu";
 import logo from "../../../assets/mais_logo_light.png";
+import { useAtom } from "jotai";
+import { isMenuOpen } from "../../ThemeAtom";
+import { Link } from "react-router-dom";
 
 const subMenus: Record<string, string[]> = {
   "Meet MAIS": ["Overview", "History", "Campus"],
@@ -13,21 +16,27 @@ const subMenus: Record<string, string[]> = {
   "Join Us": ["Admission", "Job Posting", "Contact Us", "Forums"],
 };
 
-const footerLinks: string[] = ["News", "Events", "Contact Us", "Forums"];
+const footerLinks: string[] = ["news", "events", "contact us", "forums"];
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpenState, setIsMenuOpenState] = useAtom(isMenuOpen);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
+  const handleMenuClick = () => {
+    setIsOpen(false);
+    setIsMenuOpenState(false);
+  };
+
   return (
     <div className="relative">
-      <button onClick={() => setIsOpen(true)}>
+      <button onClick={() => {setIsOpen(true); setIsMenuOpenState(true)}}>
         <HiOutlineMenuAlt3 size={35} />
       </button>
 
       {isOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-[#121212] text-white flex flex-col">
+        <div className="fixed top-0 left-0 z-30 w-full h-full bg-[#121212] text-white flex flex-col">
           <div className="w-full h-[6rem] mt-3 flex justify-center relative">
             <div className="flex flex-row items-center">
               <img src={logo} alt="Logo" className="h-full" />
@@ -36,7 +45,7 @@ const Menu = () => {
                 <p className="text-md">International School</p>
               </span>
             </div>  
-            <button className="absolute top-0 right-0 m-4 text-white" onClick={() => setIsOpen(false)}>
+            <button className="absolute top-0 right-0 m-4 text-white" onClick={() => {setIsOpen(false); setIsMenuOpenState(false)}}>
               <IoMdClose size={40} />
             </button>
           </div>
@@ -87,14 +96,19 @@ const Menu = () => {
             <div className="w-full md:w-[50%] flex justify-center items-center mb-2 md:mb-0">
               <ul className="flex flex-wrap justify-center gap-4 md:gap-12">
                 {footerLinks.map((link, index) => (
-                  <li key={index} className="cursor-pointer hover:text-gray-400">
+                  <Link to={`${link}`} onClick={handleMenuClick} key={index} className="capitalize cursor-pointer hover:text-gray-400">
                     {link}
-                  </li>
+                  </Link>
                 ))}
               </ul>
             </div>
             <div className="w-full md:w-[50%] flex justify-center items-center">
               <p>&copy; 2021 MAIS</p>
+              <button>
+                <a href="/admin" className="ml-4 text-blue-500 hover:underline">
+                  Admin
+                </a>
+              </button>
             </div>  
           </div>
         </div>

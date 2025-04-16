@@ -8,7 +8,7 @@ import { IoSearch } from "react-icons/io5";
 const Navbar: React.FC = () => {
 
   return (
-    <div className="flex flex-row justify-between items-center w-full h-20 bg-white dark:bg-gray-100 p-1 py-1 shadow-md z-30 fixed top-0">
+    <div className="flex flex-row justify-between items-center w-full h-20 bg-white dark:bg-gray-100 p-1 py-1 shadow-md z-20 fixed top-0">
       <button className="flex flex-row items-center hover:cursor-pointer">
         <div className="w-16 h-16 ml-10">
           <img src={logo} alt="logo" className="w-16"/>
