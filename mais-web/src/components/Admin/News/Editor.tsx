@@ -5,13 +5,15 @@ import { MdFormatListBulleted, MdFormatUnderlined, MdOutlineImage } from "react-
 import { AiOutlineOrderedList } from "react-icons/ai";
 import { RiMenu2Fill, RiMenu3Fill, RiMenu5Fill } from "react-icons/ri";
 import { TbBallpenOff, TbLink, TbLinkOff } from "react-icons/tb";
-import Upload from "../../../assets/upload.png";
+// Fix the Upload import by using require
+const Upload = require("../../../assets/upload.png");
 import toast, { Toaster } from "react-hot-toast";
 import { MdPreview } from "react-icons/md";
 
 import React, { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Heading from "@tiptap/extension-heading";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
@@ -28,10 +30,8 @@ import FontFamily from "@tiptap/extension-font-family";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import TextStyle from "@tiptap/extension-text-style";
 import { HexColorPicker } from "react-colorful";
-import Preview from "./Preview";
+import Preview from "../../ui/Preview";
 import { Modal } from "@mui/material";
-import { useAtom } from "jotai";
-import { isMenuOpen } from "../../ThemeAtom";
 
 const fonts = [
   { label: "Inter", value: "Inter" },
@@ -73,10 +73,59 @@ const Editor = () => {
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: { levels: [1, 2, 3, 4, 5, 6] },
+      // Core extensions first
+      Document,
+      Text,
+      Paragraph,
+      
+      // Configure list-related extensions together before StarterKit
+      ListItem.configure({
+        HTMLAttributes: {
+          class: 'list-item',
+        },
       }),
+      BulletList.configure({
+        keepMarks: true,
+        keepAttributes: true,
+        HTMLAttributes: {
+          class: 'bullet-list',
+        },
+      }),
+      OrderedList.configure({
+        keepMarks: true,
+        keepAttributes: true,
+        HTMLAttributes: {
+          class: 'ordered-list',
+        },
+      }),
+      
+      // StarterKit with list extensions disabled and heading handled separately
+      StarterKit.configure({
+        heading: false, // Disable built-in heading
+        bulletList: false,
+        orderedList: false,
+        listItem: false,
+      }),
+      
+      // Explicitly configure the Heading extension
+      Heading.configure({
+        levels: [1, 2, 3, 4, 5, 6],
+        HTMLAttributes: {
+          class: 'editor-heading',
+        },
+      }),
+      
+      // Rest of the extensions
       Gapcursor,
+      TextStyle,
+      Underline,
+      FontFamily,
+      Highlight.configure({multicolor: true}),
+      Image,
+      TextAlign.configure({ 
+        types: ["heading", "paragraph", "bulletList", "orderedList", "listItem"] 
+      }),
+      ImageResize,
       
       Link.configure({
         openOnClick: true,
@@ -128,28 +177,27 @@ const Editor = () => {
             return false
           }
         },
-
       }),
-      Document,
-      Text,
-      Paragraph,
-      BulletList,
-      OrderedList,
-      ListItem,
-      TextStyle,
-      Underline,
-      FontFamily,
-      Highlight.configure({multicolor: true}),
-      Image,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      ImageResize,
     ],
     content: "<p></p>",
+    onUpdate: ({ editor }) => {
+      // This helps debug any issues with the editor
+      console.log('Editor content:', editor.getHTML());
+      setContent(editor.getHTML());
+    },
+    // Add editor styling options
+    editorProps: {
+      attributes: {
+        class: 'prose max-w-none focus:outline-none tiptap',
+      },
+    },
   });
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [category, setCategory] = useState('Others');
+  const [author, setAuthor] = useState('');
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,40 +208,44 @@ const Editor = () => {
     setCategory(e.target.value);
   };
 
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; // Get the first file from the input
     if (file) {
-      setImage(file);
+      setImage(file); // Store the file in the state
       const reader = new FileReader();
       reader.onload = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader.result); // Set the preview to the uploaded image
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const content = editor?.getHTML() || ""; // Get the HTML content from the editor
     console.log("Image:", image);
     console.log("Title:", title);
     console.log("Content:", content);
     console.log("Category:", category);
-    if (!image || !title || !content || !category) {
+    console.log("Author:", author);
+    if (!image || !title || !content || !category || !author) {
       toast.error("Please fill in all fields and select an image.");
       return;
     }
 
+    // Create FormData for file upload
     const formData = new FormData();
     formData.append('image', image); // Append the file to FormData
     formData.append('title', title); // Append the title
     formData.append('content', content); // Append the content
     formData.append('category', category); // Append the category
+    formData.append('author', author); // Append the author
 
     try {
-      const response = await fetch('http://localhost:5000/api/blogs/create', {
+      // Use FormData for uploading files
+      const response = await fetch('/api/blogs', {
         method: 'POST',
-        body: formData, // Send the FormData as the request body
+        body: formData, // Send the FormData directly
       });
 
       const data = await response.json();
@@ -230,8 +282,6 @@ const Editor = () => {
     }
   };
 
-  const [isMenuOpenState, setIsMenuOpenState] = useAtom(isMenuOpen);
-
   if (!editor) {
     return null;
   }
@@ -254,14 +304,144 @@ const Editor = () => {
     setPreviewOpen(true);
     toast.success("Preview opened!");
   };
-
   return (
-    <div className="border pb-4 pt-8 w-full">
+    <div className="border py-4 w-full">      <style dangerouslySetInnerHTML={{ __html: `
+        /* TipTap editor styles based on documentation */
+        .tiptap > *:first-child {
+          margin-top: 0;
+        }
+        
+        /* Heading styles */
+        .tiptap h1,
+        .tiptap h2,
+        .tiptap h3,
+        .tiptap h4,
+        .tiptap h5,
+        .tiptap h6 {
+          line-height: 1.1;
+          margin-top: 2.5rem;
+          text-wrap: pretty;
+        }
+
+        .tiptap h1,
+        .tiptap h2 {
+          margin-top: 3.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .tiptap h1 {
+          font-size: 1.4rem;
+        }
+
+        .tiptap h2 {
+          font-size: 1.2rem;
+        }
+
+        .tiptap h3 {
+          font-size: 1.1rem;
+        }
+
+        .tiptap h4,
+        .tiptap h5,
+        .tiptap h6 {
+          font-size: 1rem;
+        }
+        
+        /* Direct element styling - more reliable than classes */
+        .ProseMirror h1 {
+          font-size: 1.8rem !important;
+          font-weight: bold !important;
+          margin-top: 2.5rem !important;
+          margin-bottom: 1rem !important;
+          line-height: 1.1 !important;
+        }
+        
+        .ProseMirror h2 {
+          font-size: 1.5rem !important;
+          font-weight: bold !important;
+          margin-top: 2rem !important;
+          margin-bottom: 0.75rem !important;
+          line-height: 1.1 !important;
+        }
+        
+        .ProseMirror h3 {
+          font-size: 1.3rem !important;
+          font-weight: bold !important;
+          margin-top: 1.5rem !important;
+          margin-bottom: 0.5rem !important;
+          line-height: 1.1 !important;
+        }
+        
+        .ProseMirror h4 {
+          font-size: 1.1rem !important;
+          font-weight: bold !important;
+          margin-top: 1.25rem !important;
+          margin-bottom: 0.5rem !important;
+          line-height: 1.1 !important;
+        }
+        
+        .ProseMirror h5 {
+          font-size: 1rem !important;
+          font-weight: bold !important;
+          margin-top: 1rem !important;
+          margin-bottom: 0.5rem !important;
+          line-height: 1.1 !important;
+        }
+        
+        .ProseMirror h6 {
+          font-size: 0.9rem !important;
+          font-weight: bold !important;
+          margin-top: 1rem !important;
+          margin-bottom: 0.5rem !important;
+          line-height: 1.1 !important;
+        }
+        
+        /* List styling - more specific and forceful */
+        .ProseMirror ul {
+          list-style-type: disc !important;
+          padding-left: 1.5em !important;
+          margin: 1em 0 !important;
+        }
+        
+        .ProseMirror ol {
+          list-style-type: decimal !important;
+          padding-left: 1.5em !important;
+          margin: 1em 0 !important;
+        }
+        
+        .ProseMirror li {
+          display: list-item !important;
+          padding: 0.2em 0 !important;
+        }
+        
+        /* Ensure paragraphs inside list items are properly spaced */
+        .ProseMirror li p {
+          margin: 0 !important;
+          display: inline !important;
+        }
+        
+        /* General content styling */
+        .ProseMirror p {
+          margin: 0.8em 0 !important;
+        }
+        
+        .ProseMirror {
+          min-height: 100px;
+          padding: 0.5em !important;
+        }
+        
+        /* Ensure the active bullet/numbering is visible immediately */
+        .ProseMirror ul li::marker,
+        .ProseMirror ol li::marker {
+          display: inline !important;
+          color: currentColor !important;
+        }
+      `}} />
       <Toaster/>
-      <div className="w-[80%] mx-auto my-2 font-bold text-2xl text-start">
+      <div className="w-[80%] mx-auto mb-2 font-bold text-2xl text-start">
         Content
       </div>
-      <div className={`fixed top-0 ml-auto mt-20 border-t border-b border-r z-20 mb-2 flex items-center justify-evenly w-[90%] bg-gray-100 py-1 px-2 ${isMenuOpenState ? "hidden" : "block"}`}>
+      <div className={`sticky top-0 border-t border-b border-r z-10 mb-2 flex items-center justify-evenly w-[100%] bg-gray-100 py-1 px-2`}>
         <select
           onChange={(e) => {
             const level = parseInt(e.target.value);
@@ -344,15 +524,15 @@ const Editor = () => {
               <HexColorPicker color={highlightColor} onChange={setHighlightColor} />
             </div>
           )}
-      </div>
-      <button
-        onClick={() => editor.chain().focus().unsetHighlight().run()}
-        disabled={!editor.isActive('highlight')}
-        className=""
-      >
-        <TbBallpenOff fontSize={20}/>
-      </button>
-      <label className="cursor-pointer">
+        </div>
+        <button
+          onClick={() => editor.chain().focus().unsetHighlight().run()}
+          disabled={!editor.isActive('highlight')}
+          className=""
+        >
+          <TbBallpenOff fontSize={20}/>
+        </button>
+        <label className="cursor-pointer">
           <MdOutlineImage fontSize={20}/>
           <input type="file" accept="image/*" onChange={addImage} className="hidden" />
         </label>
@@ -380,15 +560,35 @@ const Editor = () => {
           >
             <RiMenu3Fill fontSize={20}/>
           </button>
-        <button onClick={() => editor.chain().focus().toggleBulletList().run()}>
+        <button 
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={`${editor.isActive('bulletList') ? 'bg-blue-200 rounded' : ''}`}
+        >
           <MdFormatListBulleted fontSize={20}/>
         </button>
-        <button onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+        <button 
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={`${editor.isActive('orderedList') ? 'bg-blue-200 rounded' : ''}`}
+        >
           <AiOutlineOrderedList fontSize={20}/>
         </button>
+        <button 
+          onClick={() => console.log('Editor state:', editor.getJSON())}
+          className="ml-2 text-xs text-gray-500"
+          title="Debug - Print editor state to console"
+        >
+          Debug
+        </button>
       </div>
-      <div className="w-[80%] mx-auto border focus-within:border-none">
-        <EditorContent editor={editor} />
+      <div className="w-[80%] mx-auto border border-gray-300 rounded-md min-h-[300px] mb-6 relative">
+        <div className="p-4 min-h-[300px] cursor-text" onClick={() => editor.chain().focus().run()}>
+          <EditorContent editor={editor} />
+        </div>
+        {editor && !editor.isFocused && (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-400 pointer-events-none">
+            
+          </div>
+        )}
       </div>
       <div className="w-[80%] mx-auto mt-3 font-bold text-2xl text-start">
         Title
@@ -415,6 +615,17 @@ const Editor = () => {
         </div>
       </div>
       <div className="w-[80%] mx-auto mt-3 font-bold text-2xl text-start">
+        Author
+      </div>
+      <div className="w-[80%] mx-auto mt-3 flex flex-row">
+        <input
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+          placeholder="Enter author name here..."
+          className="border w-full h-10 px-2"
+        />
+      </div>
+      <div className="w-[80%] mx-auto mt-3 font-bold text-2xl text-start">
         Cover Image
       </div>
       <label
@@ -427,7 +638,7 @@ const Editor = () => {
           className="hidden"
         />
         <img
-          src={(typeof imagePreview === "string" ? imagePreview : undefined) || Upload} // Use the uploaded image preview or fallback to the default image
+          src={(typeof imagePreview === 'string' ? imagePreview : Upload)}
           alt="Preview"
           className="w-[8rem] h-[8rem]" // Ensure the image covers the container
         />
@@ -435,7 +646,7 @@ const Editor = () => {
       <div className="w-[80%] mx-auto mt-3 flex justify-center">
         <button
           onClick={handleSubmit}
-          className="bg-blue-500 w-[90%] hover:bg-blue-700 cursor-pointer text-white py-2 rounded"
+          className="bg-blue-500 w-[90%] hover:bg-blue-700 cursor-pointer text-black py-2 rounded"
         >
           Submit
         </button>
