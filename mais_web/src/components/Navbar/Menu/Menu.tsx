@@ -2,9 +2,8 @@ import { useState } from "react";
 import UpcomingEvents from "./Upcoming";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
-import { SubMenu } from "./SubMenu";
 import logo from "../../../assets/mais_logo_light.png";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { isMenuOpen } from "../../ThemeAtom";
 import { Link } from "react-router-dom";
 
@@ -20,7 +19,7 @@ const footerLinks: string[] = ["news", "events", "contact us", "forums"];
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMenuOpenState, setIsMenuOpenState] = useAtom(isMenuOpen);
+  const setIsMenuOpenState = useSetAtom(isMenuOpen);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
@@ -36,7 +35,7 @@ const Menu = () => {
       </button>
 
       {isOpen && (
-        <div className="fixed top-0 left-0 z-30 w-full h-full bg-[#121212] text-white flex flex-col">
+        <div className="fixed top-0 left-0 z-50 w-full h-full bg-[#121212] text-white flex flex-col">
           <div className="w-full h-[6rem] mt-3 flex justify-center relative">
             <div className="flex flex-row items-center">
               <img src={logo} alt="Logo" className="h-full" />

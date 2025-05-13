@@ -6,7 +6,7 @@ import { AiOutlineOrderedList } from "react-icons/ai";
 import { RiMenu2Fill, RiMenu3Fill, RiMenu5Fill } from "react-icons/ri";
 import { TbBallpenOff, TbLink, TbLinkOff } from "react-icons/tb";
 // Fix the Upload import by using require
-const Upload = require("../../../assets/upload.png");
+import Upload from "../../../assets/default.png";
 import toast, { Toaster } from "react-hot-toast";
 import { MdPreview } from "react-icons/md";
 
@@ -180,11 +180,6 @@ const Editor = () => {
       }),
     ],
     content: "<p></p>",
-    onUpdate: ({ editor }) => {
-      // This helps debug any issues with the editor
-      console.log('Editor content:', editor.getHTML());
-      setContent(editor.getHTML());
-    },
     // Add editor styling options
     editorProps: {
       attributes: {
@@ -195,7 +190,6 @@ const Editor = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [category, setCategory] = useState('Others');
   const [author, setAuthor] = useState('');
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
@@ -298,14 +292,12 @@ const Editor = () => {
     reader.readAsDataURL(file);
   };
 
-  const jsonContent = editor.getJSON();
-
   const handlePreview = () => {
     setPreviewOpen(true);
     toast.success("Preview opened!");
   };
   return (
-    <div className="border py-4 w-full">      <style dangerouslySetInnerHTML={{ __html: `
+    <div className="border pb-4 w-full">      <style dangerouslySetInnerHTML={{ __html: `
         /* TipTap editor styles based on documentation */
         .tiptap > *:first-child {
           margin-top: 0;
@@ -436,17 +428,13 @@ const Editor = () => {
           display: inline !important;
           color: currentColor !important;
         }
-      `}} />
-      <Toaster/>
-      <div className="w-[80%] mx-auto mb-2 font-bold text-2xl text-start">
-        Content
-      </div>
-      <div className={`sticky top-0 border-t border-b border-r z-10 mb-2 flex items-center justify-evenly w-[100%] bg-gray-100 py-1 px-2`}>
+      `}} />      <Toaster/>
+      <div className={`editor_bar sticky top-0 border-b border-r z-10 mb-2 flex items-center justify-evenly w-[100%] bg-gray-100 py-1 px-2`}>
         <select
           onChange={(e) => {
             const level = parseInt(e.target.value);
             if (level) {
-              editor.chain().focus().toggleHeading({ level: level as any }).run();
+              editor.chain().focus().toggleHeading({ level: level as 1 | 2 | 3 | 4 | 5 | 6 }).run();
             }
           }}
           defaultValue=""
@@ -572,13 +560,9 @@ const Editor = () => {
         >
           <AiOutlineOrderedList fontSize={20}/>
         </button>
-        <button 
-          onClick={() => console.log('Editor state:', editor.getJSON())}
-          className="ml-2 text-xs text-gray-500"
-          title="Debug - Print editor state to console"
-        >
-          Debug
-        </button>
+      </div>
+      <div className="w-[80%] mx-auto mb-2 font-bold text-2xl text-start">
+        Content
       </div>
       <div className="w-[80%] mx-auto border border-gray-300 rounded-md min-h-[300px] mb-6 relative">
         <div className="p-4 min-h-[300px] cursor-text" onClick={() => editor.chain().focus().run()}>
@@ -659,7 +643,7 @@ const Editor = () => {
           onClose={() => setPreviewOpen(false)}
           className="flex items-center justify-center w-[90%] h-[90%] mx-auto my-auto"
         >
-          <Preview blog={{ image: (imagePreview as string) || null, title, content: editor.getHTML(), category }} />
+          <Preview blog={{ image: (imagePreview as string) || "", title, content: editor.getHTML(), category }} />
         </Modal>
     </div>
   );

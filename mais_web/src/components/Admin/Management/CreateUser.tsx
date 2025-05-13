@@ -3,10 +3,19 @@ import toast from 'react-hot-toast'
 import Upload from '../../../assets/upload.png'
 import { MdOutlineAdd } from "react-icons/md";
 
+interface UserData {
+  username: string;
+  email: string;
+  password: string;
+  picture: string;
+  bio: string;
+  badges: string[];
+  achievements: string[];
+}
 
 const CreatePage = () => {
 
-  const [newUser, setNewUser] = React.useState({
+  const [newUser, setNewUser] = React.useState<UserData>({
     username: '',
     email: '',
     password: '',
@@ -20,10 +29,10 @@ const CreatePage = () => {
     const [options, setOptions] = useState(["1", "2", "3"]);
     const [selectedOption, setSelectedOption] = useState("");
   
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       const selectedBadge = e.target.value;
   
-      setNewUser((prevState: any) => ({
+      setNewUser((prevState: UserData) => ({
           ...prevState,
           badges: [...prevState.badges, selectedBadge],
       }));
@@ -32,11 +41,10 @@ const CreatePage = () => {
   
       setSelectedOption("");
     };
-
   const [achievement, setAchievement] = useState('');
 
   const handleAdd = () => {
-    setNewUser((prevState: any) => ({
+    setNewUser((prevState: UserData) => ({
       ...prevState,
       achievements: [...prevState.achievements, achievement],
     }));
@@ -57,16 +65,19 @@ const CreatePage = () => {
     });
     setOptions(["1", "2", "3"]);
   }
-
-  const [image, setImage] = useState<any>(null);
-  const [imagePreview, setImagePreview] = useState<any>(null);
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
-      setImage(file);
+      // Update the picture field in newUser state
+      setNewUser(prevState => ({
+        ...prevState,
+        picture: URL.createObjectURL(file)
+      }));
+      
       const reader = new FileReader();
       reader.onload = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
