@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
         <div className="w-16 h-16 ml-10">
           <img src={logo} alt="logo" className="w-16"/>
         </div>
-        <Link to="/" className="text-3xl ml-2">
+        <Link to="/" className="text-2xl ml-2">
           Mongol Aspiration
         </Link>
       </button>

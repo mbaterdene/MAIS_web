@@ -68,7 +68,7 @@ export default function BlogsPage() {
                     data-id={label}
                     type='button'
                     aria-label={`${label} view`}
-                    className='inline-flex px-4 py-2 rounded-full items-center bg-gray-100 justify-center text-center text-zinc-800 transition-transform active:scale-[0.98] dark:text-zinc-50'
+                    className='inline-flex px-4 py-2 rounded-full items-center bg-gray-100 justify-center text-center text-zinc-800 transition-transform active:scale-[0.98] dark:text-zinc-100'
                   >
                     {label}
                   </button>
