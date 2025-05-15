@@ -57,6 +57,7 @@ const countryNames: { [key: string]: string } = {
   "CA": "Canada",
   "JP": "Japan",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "KR": "South Korea",
   
   // Add more country names as needed
@@ -72,6 +73,8 @@ const getUniqueFields = () => {
 const getGraduationYears = () => {
   const years = alumniData.map(alumni => alumni.graduationYear);
   return Array.from(new Set(years)).sort();
+=======
+>>>>>>> parent of 9931fda (Merge pull request #3 from mbaterdene/sainorshikh)
 =======
 >>>>>>> parent of 9931fda (Merge pull request #3 from mbaterdene/sainorshikh)
 };
