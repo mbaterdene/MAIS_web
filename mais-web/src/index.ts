@@ -1,5 +1,3 @@
-import { testConnection } from './config/database';
-
 // ... existing code ...
-
-testConnection(); 
+// Remove database related code
+// ... existing code ... 

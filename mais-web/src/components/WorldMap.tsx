@@ -47,36 +47,35 @@ const countryData: CountryData[] = [
 
 const countryNames: { [key: string]: string } = {
   "US": "United States",
-  "DE": "Germany",
-  "CN": "China",
-  "BR": "Brazil",
-  "AU": "Australia",
-  "IN": "India",
-  "FR": "France",
   "GB": "United Kingdom",
   "CA": "Canada",
   "JP": "Japan",
-<<<<<<< HEAD
-<<<<<<< HEAD
   "KR": "South Korea",
-  
   // Add more country names as needed
 };
 
+interface Alumni {
+  major: string;
+  graduationYear: number;
+}
+
+// Sample alumni data - replace with your actual data
+const alumniData: Alumni[] = [
+  { major: "Computer Science", graduationYear: 2020 },
+  { major: "Business", graduationYear: 2021 },
+  // Add more sample data as needed
+];
+
 // Get unique fields of study from alumni data
 const getUniqueFields = () => {
-  const fields = alumniData.map(alumni => alumni.major);
+  const fields = alumniData.map((alumni: Alumni) => alumni.major);
   return Array.from(new Set(fields));
 };
 
 // Get graduation years range
 const getGraduationYears = () => {
-  const years = alumniData.map(alumni => alumni.graduationYear);
+  const years = alumniData.map((alumni: Alumni) => alumni.graduationYear);
   return Array.from(new Set(years)).sort();
-=======
->>>>>>> parent of 9931fda (Merge pull request #3 from mbaterdene/sainorshikh)
-=======
->>>>>>> parent of 9931fda (Merge pull request #3 from mbaterdene/sainorshikh)
 };
 
 const WorldMapComponent = () => {
