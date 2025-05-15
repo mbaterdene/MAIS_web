@@ -37,13 +37,3 @@ export const setNewUser = atom(
     set(newUser, { ...prevUser, [type]: value }); 
   }
 );
-
-export const isMenuOpen = atom(false);
-
-export const setIsMenuOpen = atom(
-  null,
-  (get: Getter, set: Setter, value: boolean) => {
-    set(isMenuOpen, value);
-  }
-);
-

@@ -4,6 +4,7 @@ const events = [
   { date: "April 5", title: "Debate Championship" },
   { date: "June 10", title: "Senior Graduation" },
   { date: "July 1", title: "Summer Camp" },
+  { date: "August 1", title: "New School Year Begins" },
 ];
 
 const UpcomingEvents = () => {
