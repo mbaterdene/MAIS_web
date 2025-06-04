@@ -1,6 +1,6 @@
 import { IoIosAdd } from "react-icons/io";
 import { useAtom } from "jotai";
-import { isMenuOpen } from "../../ThemeAtom";
+import { isMenuOpen } from "../../../store/ThemeAtom";
 import NewsBlock from "../../ui/NewsBlock";
 
 const Sidebar = () => {

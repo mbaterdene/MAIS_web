@@ -2,9 +2,8 @@ import { useState } from "react";
 import UpcomingEvents from "./Upcoming";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
-import logo from "../../../assets/mais_logo_light.png";
 import { useSetAtom } from "jotai";
-import { isMenuOpen } from "../../ThemeAtom";
+import { isMenuOpen } from "../../../store/ThemeAtom";
 import { Link } from "react-router-dom";
 
 const subMenus: Record<string, string[]> = {
@@ -35,10 +34,9 @@ const Menu = () => {
       </button>
 
       {isOpen && (
-        <div className="fixed top-0 left-0 z-50 w-full h-full bg-[#121212] text-white flex flex-col">
-          <div className="w-full h-[6rem] mt-3 flex justify-center relative">
+        <div className="fixed top-0 left-0 z-50 w-full h-full bg-[#121212] text-white flex flex-col">          <div className="w-full h-[6rem] mt-3 flex justify-center relative">
             <div className="flex flex-row items-center">
-              <img src={logo} alt="Logo" className="h-full" />
+              <img src="/mais_logo_light.png" alt="Logo" className="h-full" />
               <span>
                 <h1 className="text-2xl font-semibold">Mongol Aspiration</h1>
                 <p className="text-md">International School</p>

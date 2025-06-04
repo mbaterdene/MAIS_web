@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import { type JSX } from 'react';
 
 interface SocialLink {
   icon: JSX.Element;
