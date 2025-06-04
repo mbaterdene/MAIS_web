@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd mais_web && npm run build",
+  "outputDirectory": "mais_web/build",
+  "installCommand": "cd mais_web && npm install",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

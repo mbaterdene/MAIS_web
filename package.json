@@ -1,4 +1,14 @@
 {
+  "name": "mais_web_project",
+  "private": true,
+  "scripts": {
+    "dev": "cd mais_web && npm run dev",
+    "build": "cd mais_web && npm run build",
+    "start": "cd mais_web && npm run start",
+    "preview": "cd mais_web && npm run preview",
+    "lint": "cd mais_web && npm run lint",
+    "install-deps": "cd mais_web && npm install"
+  },
   "dependencies": {
     "react-icons": "^5.5.0"
   }
