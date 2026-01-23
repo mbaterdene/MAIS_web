@@ -2,6 +2,7 @@
 
 import { cn } from "../utils/utils";
 import { AnimatePresence, motion } from 'framer-motion';
+import type { Transition } from 'framer-motion';
 import React, {
   Children,
   useEffect,
@@ -33,10 +34,7 @@ export type AnimatedBackgroundProps = {
   defaultValue?: string;
   onValueChange?: (newActiveId: string | null) => void;
   className?: string;
-  transition?: {
-    duration?: number;
-    ease?: number[] | string;
-  };
+  transition?: Transition;
   enableHover?: boolean;
 };
 
